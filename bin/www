@@ -20,7 +20,51 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+var Mpeg1Muxer, child_process, events, util;
 
+child_process = require('child_process');
+
+util = require('util');
+
+events = require('events');
+
+
+
+
+let tokens=["jopa", "popa"]
+let a=[];
+var io = require('socket.io')(server);
+io.on('connection', function (socket) {
+
+    let stream = child_process.spawn("ffmpeg", [ "-i",
+        "http://c-cam.uchicago.edu/mjpg/video.mjpg" ,
+        '-vf','spp=6',
+        '-f', 'mpeg1video', '-b:v', '2000k', '-r', '20', '-'], {
+        detached: false
+    });
+    stream.stdout.on('data', function(data) {
+        if(Math.floor(Math.random()*100) < 0) {
+            console.log("Skipping frame");
+        } else {
+            return socket.emit('VS', data);
+        }
+    });
+    stream.stderr.on('data', function(data) {
+        console.log(data.toString());
+    });
+
+  /*
+   socket.emit("auth");
+   socket.on("server_auth", function (data) {
+   if(tokens.includes(data.token)){
+
+
+   }else{
+   socket.emit("auth")
+   }
+   })
+   */
+});
 /**
  * Listen on provided port, on all network interfaces.
  */

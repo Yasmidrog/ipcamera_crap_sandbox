@@ -1,0 +1,23 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Node MJPEG Proxy Example</title>
+</head>
+<body>
+
+<canvas id="aaa"  width="200" height="160"></canvas>
+<img src="index1.jpg">
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src=" /jsmpeg.js"></script>
+<script>
+    var socket = io.connect();
+    let  player = new jsmpeg(640, 480, {
+        canvas:  document.getElementById("aaa")// Canvas should be a canvas DOM element
+    });
+    socket.on("VS", function(data){
+        player.feed(data);
+    });
+</script>
+</html>

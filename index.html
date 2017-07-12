@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<img src="http://localhost:8080/index1.jpg" id="img">
+
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var img = document.getElementById('img'),
+        socket = io('');
+    socket.on('data', function(data) {
+        img.src = 'data:image/jpeg;base64,' + data;
+    });
+</script>
+</html>

@@ -28,7 +28,8 @@ app.use(sassMiddleware({
   sourceMap: true
 }));
 app.use(express.static(path.join(__dirname, 'public')));
-
+var MjpegProxy = require('mjpeg-proxy').MjpegProxy;
+app.get('/index1.jpg', new MjpegProxy('http://c-cam.uchicago.edu/mjpg/video.mjpg ').proxyRequest);
 app.use('/', index);
 app.use('/users', users);
 
@@ -49,5 +50,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;
